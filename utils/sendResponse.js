@@ -12,7 +12,7 @@ const sendResponse = (user, res) => {
   user.password = undefined;
   res.cookie('token', token, cookieOptions);
 
-  res.status(StatusCodes.OK).json({
+  return res.status(StatusCodes.OK).json({
     success: true,
     user,
   });
