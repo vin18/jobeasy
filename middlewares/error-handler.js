@@ -13,7 +13,9 @@ const errorHandlerMiddleware = (err, req, res, next) => {
       .join(', ');
   }
 
-  res.status(defaultError.statusCode).json({ msg: defaultError.msg });
+  res
+    .status(defaultError.statusCode)
+    .json({ success: false, msg: defaultError.msg });
 };
 
 export default errorHandlerMiddleware;

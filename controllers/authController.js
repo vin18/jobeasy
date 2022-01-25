@@ -49,4 +49,21 @@ const login = async (req, res) => {
   sendResponse(user, res);
 };
 
-export { register, login };
+/**
+ * @desc    Logout user
+ * @route   GET /api/v1/auth/logout
+ * @access  Public
+ */
+const logout = (req, res) => {
+  res.cookie('token', null, {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    message: 'User logged out',
+  });
+};
+
+export { register, login, logout };
