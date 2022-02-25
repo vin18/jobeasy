@@ -2,12 +2,22 @@ import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import connectDB from './db/connect.js';
+import cookieParser from 'cookie-parser';
+import 'express-async-errors';
+
+// routers
+import authRouter from './routes/authRoutes.js';
 
 dotenv.config();
 const app = express();
 
+app.use(cookieParser());
+app.use(express.json());
+
 const PORT = process.env.PORT || 5000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+app.use('/api/v1/auth', authRouter);
 
 const start = async () => {
   try {
