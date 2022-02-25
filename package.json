@@ -7,7 +7,9 @@
   "scripts": {
     "dev:server": "NODE_ENV=development nodemon backend/server.js",
     "prod:server": "NODE_ENV=production nodemon backend/server.js",
-    "server": "nodemon backend/server.js"
+    "server": "nodemon backend/server.js",
+    "client": "npm start --prefix client",
+    "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
   },
   "author": "Vinit Raut",
   "license": "ISC",
@@ -18,6 +20,7 @@
     "mongoose": "^6.2.3"
   },
   "devDependencies": {
+    "concurrently": "^7.0.0",
     "nodemon": "^2.0.15"
   }
 }
