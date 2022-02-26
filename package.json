@@ -9,7 +9,9 @@
     "prod:server": "NODE_ENV=production nodemon backend/server.js",
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix client",
-    "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\""
+    "start": "concurrently --kill-others-on-fail \" npm run server\" \" npm run client\"",
+    "import:data": "node backend/seeder.js -i",
+    "delete:data": "node backend/seeder.js -d"
   },
   "author": "Vinit Raut",
   "license": "ISC",

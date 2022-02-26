@@ -1,10 +1,22 @@
 import { useState } from 'react';
+import { useMutation } from 'react-query';
 import { Form, Formik } from 'formik';
 import { loginSchema, registerSchema } from '../schemas/schemas';
 import TextInput from './TextInput';
+import { auth } from '../utils/api-client';
+import Loader from './Loader';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [isMember, setIsMember] = useState(true);
+  const responseType = isMember ? 'login' : 'register';
+  const navigate = useNavigate();
+  const { mutate, data, isLoading, error, isError } = useMutation(
+    (response) => auth(response.currentUser, response.endPoint),
+    {
+      onSuccess: ({ data }) => navigate(`/profile/${data.user.username}`),
+    }
+  );
 
   const initialState = {
     username: '',
@@ -30,7 +42,19 @@ const Auth = () => {
       endPoint: 'login',
     };
 
-    console.log(isMember ? loginAction : registerAction);
+    mutate(isMember ? loginAction : registerAction);
+  };
+
+  const handleGuestLogin = () => {
+    const guestLoginAction = {
+      currentUser: {
+        email: 'test@example.com',
+        password: '123456',
+      },
+      endPoint: 'login',
+    };
+
+    mutate(guestLoginAction);
   };
 
   return (
@@ -106,11 +130,18 @@ const Auth = () => {
                 </div>
 
                 <div className="flex justify-between items-center">
-                  <button className="btn btn-primary mt-4 px-12 mr-4">
-                    {isMember ? 'Login' : 'Register'}
+                  <button
+                    disabled={isLoading}
+                    className="btn btn-primary mt-4 px-12 mr-4"
+                  >
+                    {isLoading ? <Loader /> : isMember ? 'Login' : 'Register'}
                   </button>
-                  <button className="btn btn-primary mt-4">
-                    Login as guest
+                  <button
+                    onClick={handleGuestLogin}
+                    disabled={isLoading}
+                    className="btn btn-primary mt-4"
+                  >
+                    {isLoading ? <Loader /> : 'Login as guest'}
                   </button>
                 </div>
               </Form>

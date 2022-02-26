@@ -1,13 +1,22 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home, Auth } from './pages';
+import { QueryClientProvider, QueryClient } from 'react-query';
+import { Home, Auth, Profile } from './pages';
+import { AuthProvider } from './contexts/auth-context';
+
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Auth />} />
-      </Routes>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Auth />} />
+            <Route path="/profile/:username" element={<Profile />} />
+          </Routes>
+        </AuthProvider>
+      </QueryClientProvider>
     </BrowserRouter>
   );
 };
