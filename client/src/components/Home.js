@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import homeBanner from '../assets/hero.png';
+import { useAuth } from '../contexts/auth-context';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
 
   return (
     <div>
@@ -19,7 +21,7 @@ const Home = () => {
               onClick={() => navigate(`/login`)}
               className="btn btn-primary mr-2"
             >
-              Join the community
+              {isLoggedIn ? 'Explore community' : 'Join the community'}
             </button>
           </div>
         </div>

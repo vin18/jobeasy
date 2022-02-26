@@ -15,7 +15,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Auth />} />
-            <Route path="/profile/:username" element={<Profile />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </AuthProvider>
       </QueryClientProvider>

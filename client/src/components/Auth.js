@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { Form, Formik } from 'formik';
 import { loginSchema, registerSchema } from '../schemas/schemas';
@@ -6,17 +6,27 @@ import TextInput from './TextInput';
 import { auth } from '../utils/api-client';
 import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/auth-context';
 
 const Auth = () => {
   const [isMember, setIsMember] = useState(true);
   const responseType = isMember ? 'login' : 'register';
   const navigate = useNavigate();
-  const { mutate, data, isLoading, error, isError } = useMutation(
-    (response) => auth(response.currentUser, response.endPoint),
-    {
-      onSuccess: ({ data }) => navigate(`/profile/${data.user.username}`),
-    }
-  );
+  const { isLoggedIn, user, setUser } = useAuth();
+  const {
+    mutate: handleAuth,
+    data,
+    isLoading,
+  } = useMutation((response) => auth(response.currentUser, response.endPoint), {
+    onSuccess: (data) => {
+      setUser(data?.data?.user);
+      navigate(`/profile`);
+    },
+  });
+
+  useEffect(() => {
+    if (isLoggedIn) navigate(`/profile`);
+  }, [isLoggedIn]);
 
   const initialState = {
     username: '',
@@ -42,7 +52,7 @@ const Auth = () => {
       endPoint: 'login',
     };
 
-    mutate(isMember ? loginAction : registerAction);
+    handleAuth(isMember ? loginAction : registerAction);
   };
 
   const handleGuestLogin = () => {
@@ -54,7 +64,7 @@ const Auth = () => {
       endPoint: 'login',
     };
 
-    mutate(guestLoginAction);
+    handleAuth(guestLoginAction);
   };
 
   return (

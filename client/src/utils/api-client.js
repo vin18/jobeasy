@@ -11,7 +11,19 @@ export const auth = async (userData, responseType) => {
       url: `/auth/${responseType}`,
       data: userData,
     });
+    return response;
   } catch (error) {
-    console.error('Sign in error: ', error);
+    console.error('Auth error: ', error);
+  }
+};
+
+export const logout = async () => {
+  try {
+    await client({
+      method: 'GET',
+      url: `/auth/logout`,
+    });
+  } catch (error) {
+    console.error('Logout error: ', error);
   }
 };
