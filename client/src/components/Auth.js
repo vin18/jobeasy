@@ -132,16 +132,18 @@ const Auth = () => {
                 <div className="flex justify-between items-center">
                   <button
                     disabled={isLoading}
-                    className="btn btn-primary mt-4 px-12 mr-4"
+                    className={`btn btn-primary mt-4 px-12 mr-4 ${
+                      isLoading && 'loading'
+                    }`}
                   >
-                    {isLoading ? <Loader /> : isMember ? 'Login' : 'Register'}
+                    {isMember ? 'Login' : 'Register'}
                   </button>
                   <button
                     onClick={handleGuestLogin}
                     disabled={isLoading}
-                    className="btn btn-primary mt-4"
+                    className={`btn btn-primary mt-4 ${isLoading && 'loading'}`}
                   >
-                    {isLoading ? <Loader /> : 'Login as guest'}
+                    {'Login as guest'}
                   </button>
                 </div>
               </Form>
