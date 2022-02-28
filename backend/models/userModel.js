@@ -27,6 +27,20 @@ const UserSchema = new mongoose.Schema(
       minlength: 6,
       select: false,
     },
+    description: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    skills: [String],
+    city: {
+      type: String,
+      default: '',
+    },
+    country: {
+      type: String,
+      default: '',
+    },
   },
   {
     timestamps: true,

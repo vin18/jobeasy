@@ -37,4 +37,13 @@ const loginSchema = yup.object().shape({
     .defined(),
 });
 
-export { registerSchema, loginSchema };
+const projectSchema = yup.object().shape({
+  projectName: yup.string().required('Project name is required').defined(),
+  projectDescription: yup
+    .string()
+    .required('Project description is required')
+    .defined(),
+  projectAvatar: yup.string().defined(),
+});
+
+export { registerSchema, loginSchema, projectSchema };

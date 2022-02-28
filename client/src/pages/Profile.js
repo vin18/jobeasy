@@ -2,7 +2,7 @@ import Profile from '../components/Profile';
 
 const ProfilePage = () => {
   return (
-    <div className="min-h-screen container mx-auto flex pb-64 justify-center pt-20">
+    <div className="min-h-screen container mx-auto flex  justify-center pt-16 ">
       <Profile />
     </div>
   );

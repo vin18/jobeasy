@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import useWindowWidth from '../hooks/useWindowWidth';
 import navbarLinks from '../utils/navbarLinks';
@@ -11,6 +11,7 @@ const Header = () => {
   const { isMobile } = useWindowWidth();
   const { user, setUser, isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   const { mutate: logoutUser } = useMutation(logout, {
     onSuccess: () => {
@@ -93,7 +94,9 @@ const Header = () => {
                 <li key={link.key}>
                   <Link
                     to={link.to}
-                    className="hover:text-green-700 bg-transparent"
+                    className={`${
+                      pathname.includes(link.to) && 'text-green-700'
+                    } hover:text-green-700 bg-transparent`}
                   >
                     {link.name}
                   </Link>
@@ -104,11 +107,14 @@ const Header = () => {
 
         <div className="navbar-end flex justify-end">
           {!isLoggedIn ? (
-            <Link to="/login" className="btn btn-sm btn-primary">
+            <Link to="/login" className="btn btn-sm btn-primary text-green-50">
               Log In
             </Link>
           ) : (
-            <button onClick={logoutUser} className="btn btn-sm btn-primary">
+            <button
+              onClick={logoutUser}
+              className="btn btn-sm btn-primary text-green-50"
+            >
               Logout
             </button>
           )}
