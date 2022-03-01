@@ -53,7 +53,20 @@ export const addProject = async (projectData) => {
   }
 };
 
-export const deleteProject = async ({ projectId }) => {
+export const updateProject = async ({ projectId, ...project }) => {
+  try {
+    const { data } = await client({
+      method: 'PATCH',
+      url: `/projects/${projectId}`,
+      data: { ...project },
+    });
+    return data;
+  } catch (error) {
+    console.error('Update project error: ', error);
+  }
+};
+
+export const deleteProject = async (projectId) => {
   try {
     await client({
       method: 'DELETE',

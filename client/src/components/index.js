@@ -6,5 +6,16 @@ import Profile from './Profile';
 import Header from './Header';
 import PeersList from './PeersList';
 import Settings from './Settings';
+import MyProjects from './MyProjects';
 
-export { Home, Auth, TextInput, Loader, Profile, Header, PeersList, Settings };
+export {
+  Home,
+  Auth,
+  TextInput,
+  Loader,
+  Profile,
+  Header,
+  PeersList,
+  Settings,
+  MyProjects,
+};

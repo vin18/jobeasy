@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Home, Auth, Profile, Peers, Settings } from './pages';
 import { AuthProvider } from './contexts/auth-context';
 import { Header } from './components';
@@ -8,8 +9,8 @@ const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
         <AuthProvider>
           <Header />
           <Routes>
@@ -20,8 +21,9 @@ const App = () => {
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </AuthProvider>
-      </QueryClientProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+      <ReactQueryDevtools />
+    </QueryClientProvider>
   );
 };
 
