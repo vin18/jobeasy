@@ -1,18 +1,71 @@
-import { FaEdit, FaLocationArrow, FaPencilAlt, FaPlus } from 'react-icons/fa';
-import emptyPotfolio from '../assets/emptyPortfolio.png';
+import { useState } from 'react';
+import {
+  FaEdit,
+  FaLocationArrow,
+  FaPencilAlt,
+  FaPlus,
+  FaPlusCircle,
+  FaTrashAlt,
+} from 'react-icons/fa';
+import emptyPortfolio from '../assets/emptyPortfolio.png';
 import notFoundImg from '../assets/404-error.jpg';
-import TextInput from './TextInput';
-import { Form, Formik } from 'formik';
 import { projectSchema } from '../schemas/schemas';
+import { useQuery, useMutation } from 'react-query';
+import { addProject, getAllProjects } from '../utils/api-client';
 
+const INITIAL_STATE = {
+  projectName: '',
+  projectDescription: '',
+};
 const Profile = () => {
-  const initialState = {
-    projectName: '',
-    projectDescription: '',
-    projectImage: '',
+  const [projectImage, setProjectImage] = useState();
+  const [projectImagePreview, setProjectImagePreview] = useState();
+  const [initialState, setInitialState] = useState(INITIAL_STATE);
+
+  const {
+    data: projects,
+    isLoading: projectsLoading,
+    error,
+    isError,
+  } = useQuery('projects', getAllProjects);
+
+  const { mutate: handleProjectSubmit, data } = useMutation(
+    (response) => addProject(response),
+    {
+      onSuccess: () => {
+        setInitialState(INITIAL_STATE);
+        setProjectImage('');
+        setProjectImagePreview('');
+      },
+    }
+  );
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setInitialState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleProjectSubmit = () => {};
+  const handleSubmit = () => {
+    const values = {
+      ...initialState,
+      projectImage,
+    };
+
+    handleProjectSubmit(values);
+  };
+
+  const handleImageChange = (event) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setProjectImage(reader.result);
+        setProjectImagePreview(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
+  };
 
   return (
     <div className="w-3/5 mx-auto text-gray-700">
@@ -75,74 +128,111 @@ const Profile = () => {
 
             <div className="modal" id="my-modal-2">
               <div className="modal-box">
-                <h3 className="font-bold text-2xl">Add Project</h3>
+                <h3 className="font-bold text-2xl text-green-600">
+                  Add Project
+                </h3>
 
-                <Formik
-                  validationSchema={projectSchema}
-                  initialValues={initialState}
-                  onSubmit={handleProjectSubmit}
-                >
-                  {({
-                    handleSubmit,
-                    handleChange,
-                    values,
-                    errors,
-                    setFieldValue,
-                  }) => {
-                    return (
-                      <Form noValidate onSubmit={handleSubmit}>
-                        <TextInput
-                          label="Project Name"
-                          placeholder="project name"
-                          inputType="text"
-                          name="projectName"
-                          value={values.projectName}
-                          error={errors.projectName}
-                          onChange={handleChange}
-                          widthFull
-                        />
+                <form onSubmit={handleSubmit}>
+                  <div className="mt-4">
+                    <div>
+                      <label className="block" htmlFor="projectName">
+                        Project Name
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Project name"
+                        className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
+                        value={initialState.projectName}
+                        onChange={handleChange}
+                        name="projectName"
+                      />
+                    </div>
+                  </div>
 
-                        <TextInput
-                          label="Project Description"
-                          placeholder="project description"
-                          inputType="text"
-                          name="projectDescription"
-                          value={values.projectDescription}
-                          error={errors.projectDescription}
-                          onChange={handleChange}
-                          isTextArea
-                          widthFull
-                        />
-                      </Form>
-                    );
-                  }}
-                </Formik>
+                  <div className="mt-4">
+                    <div>
+                      <label className="block" htmlFor="projectName">
+                        Project Description
+                      </label>
+                      <textarea
+                        placeholder="Project description"
+                        className="px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
+                        value={initialState.projectDescription}
+                        onChange={handleChange}
+                        name="projectDescription"
+                      />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <label className="block mb-1">Project Cover</label>
+                    <img
+                      className="mb-2 w-full h-64 rounded"
+                      src={
+                        projectImagePreview
+                          ? projectImagePreview
+                          : emptyPortfolio
+                      }
+                      alt="Project image"
+                    />
 
-                <div className="modal-action">
-                  <a href="#" className="btn btn-primary">
-                    Close
-                  </a>
-                </div>
+                    <input
+                      type="projectImage"
+                      type="file"
+                      onChange={handleImageChange}
+                    />
+                  </div>
+
+                  <div className="flex justify-center mt-2">
+                    <a
+                      href="#"
+                      className="flex items-center btn btn-primary mr-2"
+                      onClick={handleSubmit}
+                    >
+                      <span className="mr-1">Add</span> <FaPlusCircle />
+                    </a>
+
+                    <a href="#" className="btn btn-primary">
+                      <span className="mr-1">Cancel</span>
+                    </a>
+                  </div>
+                </form>
               </div>
             </div>
           </div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {[1, 2].map((el) => (
-              <div
-                key={el}
-                className="relative border border-gray-100 rounded-md shadow overflow-hidden group transition-all duration-150 hover:-translate-y-1 hover:border-green-300 cursor-pointer"
-              >
-                <button className="hidden transition-all duration-150 group-hover:flex items-center justify-center bg-green-50 w-8 h-8 rounded-full absolute right-4 top-4">
-                  <FaPencilAlt className="text-green-500 text-sm" />
-                </button>
-                <img src={emptyPotfolio} alt="" />
-                <div className="p-4">
-                  <h3 className="text-xl font-semibold">ShopEasy</h3>
-                  <p>An eCommerce store built using the MERN stack</p>
-                </div>
+            {projectsLoading && <p>Loading</p>}
+            {projects?.length === 0 && (
+              <div className="flex flex-col justify-center items-center">
+                <p>There are currently no projects added yet 🤷‍♂️</p>
               </div>
-            ))}
+            )}
+            {!projectsLoading &&
+              projects?.map((project) => {
+                return (
+                  <div
+                    key={project?._id}
+                    className="relative border border-gray-100 rounded-md shadow overflow-hidden group transition-all duration-150 hover:-translate-y-1 hover:border-green-300 cursor-pointer"
+                  >
+                    <button className="hidden transition-all duration-150 group-hover:flex items-center justify-center bg-green-50 w-8 h-8 rounded-full absolute right-14 top-4">
+                      <FaPencilAlt className="text-green-500 text-sm" />
+                    </button>
+
+                    <button className="hidden transition-all duration-150 group-hover:flex items-center justify-center bg-green-50 w-8 h-8 rounded-full absolute right-4 top-4">
+                      <FaTrashAlt className="text-green-500 text-sm" />
+                    </button>
+                    <img
+                      className="h-48"
+                      src={project?.image?.url || emptyPortfolio}
+                      alt=""
+                    />
+                    <div className="p-4">
+                      <h3 className="text-xl font-semibold">{project?.name}</h3>
+                      <p>{project?.description}</p>
+                    </div>
+                  </div>
+                );
+              })}
           </div>
         </div>
       </section>

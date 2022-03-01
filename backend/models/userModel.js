@@ -41,6 +41,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
+    isNewUser: {
+      type: Boolean,
+      default: true,
+    },
   },
   {
     timestamps: true,

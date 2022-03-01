@@ -19,7 +19,7 @@ const TextInput = ({
           <textarea
             type={inputType}
             placeholder={placeholder}
-            className="px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block"
+            className="px-4 py-2 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
             value={value}
             onChange={onChange}
             name={name}
@@ -28,7 +28,7 @@ const TextInput = ({
           <input
             type={inputType}
             placeholder={placeholder}
-            className="px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block"
+            className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
             value={value}
             onChange={onChange}
             name={name}
