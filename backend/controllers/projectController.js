@@ -45,4 +45,18 @@ const addProject = async (req, res) => {
   });
 };
 
-export { addProject, getAllProjects };
+/**
+ * @desc    Delete project
+ * @route   DELETE /api/v1/projects/:projectId
+ * @access  Private
+ */
+const deleteProject = async (req, res) => {
+  await Project.findByIdAndDelete(req.params.projectId);
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    project: null,
+  });
+};
+
+export { addProject, getAllProjects, deleteProject };

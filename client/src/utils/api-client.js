@@ -52,3 +52,14 @@ export const addProject = async (projectData) => {
     console.error('Add project error: ', error);
   }
 };
+
+export const deleteProject = async ({ projectId }) => {
+  try {
+    await client({
+      method: 'DELETE',
+      url: `/projects/${projectId}`,
+    });
+  } catch (error) {
+    console.error('Delete project error: ', error);
+  }
+};

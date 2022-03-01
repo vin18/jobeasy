@@ -10,17 +10,19 @@ import {
 import emptyPortfolio from '../assets/emptyPortfolio.png';
 import notFoundImg from '../assets/404-error.jpg';
 import { projectSchema } from '../schemas/schemas';
-import { useQuery, useMutation } from 'react-query';
-import { addProject, getAllProjects } from '../utils/api-client';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { addProject, getAllProjects, deleteProject } from '../utils/api-client';
 
 const INITIAL_STATE = {
   projectName: '',
   projectDescription: '',
 };
+
 const Profile = () => {
   const [projectImage, setProjectImage] = useState();
   const [projectImagePreview, setProjectImagePreview] = useState();
   const [initialState, setInitialState] = useState(INITIAL_STATE);
+  const queryClient = useQueryClient();
 
   const {
     data: projects,
@@ -30,12 +32,16 @@ const Profile = () => {
   } = useQuery('projects', getAllProjects);
 
   const { mutate: handleProjectSubmit, data } = useMutation(
-    (response) => addProject(response),
+    (response) =>
+      response?.isDelete
+        ? deleteProject(response?.projectId)
+        : addProject(response),
     {
       onSuccess: () => {
         setInitialState(INITIAL_STATE);
         setProjectImage('');
         setProjectImagePreview('');
+        queryClient.invalidateQueries('projects');
       },
     }
   );
@@ -45,13 +51,17 @@ const Profile = () => {
     setInitialState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = ({ isDelete, projectId } = {}) => {
     const values = {
       ...initialState,
       projectImage,
     };
 
-    handleProjectSubmit(values);
+    if (isDelete && projectId) {
+      handleProjectSubmit({ isDelete, projectId });
+    } else {
+      handleProjectSubmit(values);
+    }
   };
 
   const handleImageChange = (event) => {
@@ -200,13 +210,13 @@ const Profile = () => {
             </div>
           </div>
 
+          {projects?.length === 0 && (
+            <div className="flex justify-center items-center">
+              <p>There are currently no projects added yet 🤷‍♂️</p>
+            </div>
+          )}
+
           <div className="grid lg:grid-cols-2 gap-8">
-            {projectsLoading && <p>Loading</p>}
-            {projects?.length === 0 && (
-              <div className="flex flex-col justify-center items-center">
-                <p>There are currently no projects added yet 🤷‍♂️</p>
-              </div>
-            )}
             {!projectsLoading &&
               projects?.map((project) => {
                 return (
@@ -218,7 +228,12 @@ const Profile = () => {
                       <FaPencilAlt className="text-green-500 text-sm" />
                     </button>
 
-                    <button className="hidden transition-all duration-150 group-hover:flex items-center justify-center bg-green-50 w-8 h-8 rounded-full absolute right-4 top-4">
+                    <button
+                      onClick={() =>
+                        handleSubmit({ isDelete: true, projectId: project._id })
+                      }
+                      className="hidden transition-all duration-150 group-hover:flex items-center justify-center bg-green-50 w-8 h-8 rounded-full absolute right-4 top-4"
+                    >
                       <FaTrashAlt className="text-green-500 text-sm" />
                     </button>
                     <img
