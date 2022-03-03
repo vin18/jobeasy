@@ -10,6 +10,7 @@ import 'express-async-errors';
 import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import projectRouter from './routes/projectRoutes.js';
+import blogRouter from './routes/blogRoutes.js';
 
 // middlewares
 import errorHandlerMiddleware from './middlewares/error-handler.js';
@@ -32,6 +33,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/projects', projectRouter);
+app.use('/api/v1/blogs', blogRouter);
 
 app.use(errorHandlerMiddleware);
 
