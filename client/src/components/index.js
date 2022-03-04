@@ -7,6 +7,9 @@ import Header from './Header';
 import PeersList from './PeersList';
 import Settings from './Settings';
 import MyProjects from './MyProjects';
+import MyBlogs from './MyBlogs';
+import MyProfile from './MyProfile';
+import MySocial from './MySocial';
 
 export {
   Home,
@@ -18,4 +21,7 @@ export {
   PeersList,
   Settings,
   MyProjects,
+  MyBlogs,
+  MyProfile,
+  MySocial,
 };

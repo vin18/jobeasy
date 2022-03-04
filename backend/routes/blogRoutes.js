@@ -3,13 +3,12 @@ import {
   addBlog,
   deleteBlog,
   getAllBlogs,
-  getAllProjects,
   updateBlog,
 } from '../controllers/blogController.js';
 import protect from '../middlewares/authorization.js';
 const router = express.Router();
 
-router.route('/').get(getAllBlogs).post(protect, addBlo);
+router.route('/').get(getAllBlogs).post(protect, addBlog);
 router
   .route('/:projectId')
   .delete(protect, deleteBlog)

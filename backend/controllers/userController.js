@@ -9,8 +9,6 @@ import { sendResponse } from '../utils/index.js';
  * @access  Private
  */
 const updateProfile = async (req, res) => {
-  const { description, skills, city, country } = req.body;
-
   const user = await User.findByIdAndUpdate(req.user._id, req.body, {
     new: true,
     runValidators: true,
@@ -19,6 +17,11 @@ const updateProfile = async (req, res) => {
   if (!user) {
     throw new NotFoundError(`User not found`);
   }
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    user,
+  });
 };
 
 export { updateProfile };

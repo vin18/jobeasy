@@ -76,3 +76,52 @@ export const deleteProject = async (projectId) => {
     console.error('Delete project error: ', error);
   }
 };
+
+export const getAllBlogs = async () => {
+  try {
+    const { data } = await client({
+      method: 'GET',
+      url: `/blogs`,
+    });
+
+    return data?.blogs;
+  } catch (error) {
+    console.error('Get all blogs error: ', error);
+  }
+};
+
+export const addBlog = async (blogData) => {
+  try {
+    await client({
+      method: 'POST',
+      url: `/blogs`,
+      data: blogData,
+    });
+  } catch (error) {
+    console.error('Add blog error: ', error);
+  }
+};
+
+export const updateBlog = async ({ blogId, ...blog }) => {
+  try {
+    const { data } = await client({
+      method: 'PATCH',
+      url: `/blogs/${blogId}`,
+      data: { ...blog },
+    });
+    return data;
+  } catch (error) {
+    console.error('Update blog error: ', error);
+  }
+};
+
+export const deleteBlog = async (blogId) => {
+  try {
+    await client({
+      method: 'DELETE',
+      url: `/blogs/${blogId}`,
+    });
+  } catch (error) {
+    console.error('Delete blog error: ', error);
+  }
+};

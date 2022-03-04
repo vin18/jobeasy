@@ -10,6 +10,7 @@ import {
 import emptyPortfolio from '../assets/emptyPortfolio.png';
 import notFoundImg from '../assets/404-error.jpg';
 import MyProjects from './MyProjects';
+import MyBlogs from './MyBlogs';
 
 const Profile = () => {
   return (
@@ -62,21 +63,7 @@ const Profile = () => {
       </header>
 
       <MyProjects />
-
-      <section>
-        <div className="flex flex-col justify-between bg-gray-50 min-h-full px-8 py-4 shadow border border-green-100 rounded">
-          <div className="flex items-center mb-2">
-            <h2 className="text-2xl font-semibold mr-2">📝 My Blogs</h2>
-            <button className="flex justify-center items-center bg-green-500 w-7 h-7 rounded-full">
-              <FaPlus className="text-xs text-green-50" />
-            </button>
-          </div>
-
-          <div className="flex flex-col justify-center items-center">
-            <p>There are currently no blogs added yet 🤷‍♂️</p>
-          </div>
-        </div>
-      </section>
+      <MyBlogs />
     </div>
   );
 };
