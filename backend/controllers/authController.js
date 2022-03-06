@@ -68,7 +68,7 @@ const logout = (req, res) => {
 
 /**
  * @desc    Get logged in user
- * @route   GET /api/v1/users/me
+ * @route   GET /api/v1/auth/me
  * @access  Private
  */
 const getMe = async (req, res) => {

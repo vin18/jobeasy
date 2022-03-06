@@ -24,4 +24,18 @@ const updateProfile = async (req, res) => {
   });
 };
 
-export { updateProfile };
+/**
+ * @desc    Update profile
+ * @route   POST /api/v1/user/socials
+ * @access  Private
+ */
+const addSocialLinks = async (req, res) => {
+  const user = await User.create({ socials: req.body });
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    user,
+  });
+};
+
+export { updateProfile, addSocialLinks };

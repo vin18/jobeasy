@@ -27,7 +27,7 @@ const UserSchema = new mongoose.Schema(
       minlength: 6,
       select: false,
     },
-    description: {
+    bio: {
       type: String,
       trim: true,
       default: '',
@@ -45,6 +45,7 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    socials: [],
   },
   {
     timestamps: true,

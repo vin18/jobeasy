@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useMutation } from 'react-query';
+import { useAuth } from '../contexts/auth-context';
+import { updateSocials } from '../utils/api-client';
 
 const INITIAL_STATE = {
   twitter: '',
@@ -9,10 +12,30 @@ const INITIAL_STATE = {
 
 const MySocial = () => {
   const [initialState, setInitialState] = useState(INITIAL_STATE);
+  const { user } = useAuth();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInitialState((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  useEffect(() => {
+    setInitialState({ ...user?.socials[0] });
+  }, [user]);
+
+  const {
+    mutate: handleAddSocialHandles,
+    data,
+    isLoading,
+  } = useMutation((userValues) => updateSocials(userValues), {
+    onSuccess: (data) => {
+      console.log(`Social links updated!`);
+    },
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleAddSocialHandles({ socials: [initialState] });
   };
 
   return (
@@ -21,7 +44,7 @@ const MySocial = () => {
         <h3 className="text-gray-900">Social Links</h3>
       </div>
 
-      <form className="p-4">
+      <form className="p-4" onSubmit={handleSubmit}>
         <div className="flex">
           <div className="mr-4 w-full">
             <input

@@ -125,3 +125,25 @@ export const deleteBlog = async (blogId) => {
     console.error('Delete blog error: ', error);
   }
 };
+
+export const updateProfile = async (values) => {
+  try {
+    await client({
+      method: 'PATCH',
+      url: `/user`,
+    });
+  } catch (error) {
+    console.error('updateProfile error: ', error);
+  }
+};
+
+export const updateSocials = async (values) => {
+  try {
+    await client({
+      method: 'POST',
+      url: `/user/socials`,
+    });
+  } catch (error) {
+    console.error('updateSocials error: ', error);
+  }
+};

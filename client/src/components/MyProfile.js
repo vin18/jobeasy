@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useMutation } from 'react-query';
+import { updateProfile } from '../utils/api-client';
+import { useAuth } from '../contexts/auth-context';
 
 const INITIAL_STATE = {
   name: '',
   bio: '',
-  location: '',
-  website: '',
-  preferredPronoun: '',
+  city: '',
+  country: '',
 };
 
 const MyProfile = () => {
+  const { user } = useAuth();
   const [initialState, setInitialState] = useState(INITIAL_STATE);
+  const {
+    mutate: handleUserProfileUpdate,
+    data,
+    isLoading,
+  } = useMutation(() => updateProfile(initialState), {
+    onSuccess: (data) => {
+      console.log(`Profile updated!`);
+    },
+  });
+
+  useEffect(() => {
+    setInitialState({ ...user });
+  }, [user]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -18,7 +34,7 @@ const MyProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(initialState);
+    handleUserProfileUpdate();
   };
 
   return (
@@ -50,10 +66,11 @@ const MyProfile = () => {
             <input
               type="text"
               placeholder="Email"
-              className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
+              className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full cursor-not-allowed"
               value={initialState.email}
               onChange={handleChange}
               name="email"
+              disabled
             />
           </div>
         </div>
@@ -75,29 +92,29 @@ const MyProfile = () => {
         <div className="flex mt-4">
           <div className="mr-4 w-full">
             <label className="block" htmlFor="projectName">
-              Location
+              City
             </label>
             <input
               type="text"
-              placeholder="Location"
+              placeholder="City"
               className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
-              value={initialState.location}
+              value={initialState.city}
               onChange={handleChange}
-              name="location"
+              name="city"
             />
           </div>
 
           <div className="w-full">
             <label className="block" htmlFor="projectName">
-              Website
+              Country
             </label>
             <input
               type="text"
-              placeholder="Website"
+              placeholder="country"
               className="px-4 py-2 mt-2 border border-gray-300  rounded-md focus:outline-none focus:ring-1 focus:ring-green-600 block w-full"
-              value={initialState.website}
+              value={initialState.country}
               onChange={handleChange}
-              name="website"
+              name="country"
             />
           </div>
         </div>
