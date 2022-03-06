@@ -149,3 +149,15 @@ export const updateSocials = async (values) => {
     console.error('updateSocials error: ', error);
   }
 };
+
+export const changePassword = async (values) => {
+  try {
+    await client({
+      method: 'PATCH',
+      url: `/user/change-password`,
+      data: values,
+    });
+  } catch (error) {
+    console.error('changePassword error: ', error);
+  }
+};

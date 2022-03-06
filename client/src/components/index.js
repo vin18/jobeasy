@@ -10,6 +10,7 @@ import MyProjects from './MyProjects';
 import MyBlogs from './MyBlogs';
 import MyProfile from './MyProfile';
 import MySocial from './MySocial';
+import ChangePassword from './ChangePassword';
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   MyBlogs,
   MyProfile,
   MySocial,
+  ChangePassword,
 };

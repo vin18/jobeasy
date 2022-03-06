@@ -7,9 +7,12 @@ import { auth } from '../utils/api-client';
 import Loader from './Loader';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
+import toast from 'react-hot-toast';
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 const Auth = () => {
   const [isMember, setIsMember] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const responseType = isMember ? 'login' : 'register';
   const navigate = useNavigate();
   const { isLoggedIn, user, setUser } = useAuth();
@@ -19,8 +22,10 @@ const Auth = () => {
     isLoading,
   } = useMutation((response) => auth(response.currentUser, response.endPoint), {
     onSuccess: (data) => {
-      setUser(data?.data?.user);
-      navigate(`/profile`);
+      if (data?.status === 200) {
+        setUser(data?.data?.user);
+        navigate(`/profile`);
+      }
     },
   });
 
@@ -113,6 +118,9 @@ const Auth = () => {
                   value={values.password}
                   error={errors.password}
                   onChange={handleChange}
+                  passwordInput
+                  showPassword={showPassword}
+                  setShowPassword={setShowPassword}
                 />
 
                 <div className="flex justify-between items-center text-sm  mt-1">

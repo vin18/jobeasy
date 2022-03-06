@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { updateProfile } from '../utils/api-client';
 import { useAuth } from '../contexts/auth-context';
+import toast from 'react-hot-toast';
 
 const INITIAL_STATE = {
   name: '',
@@ -19,7 +20,7 @@ const MyProfile = () => {
     isLoading,
   } = useMutation(() => updateProfile({ ...initialState }), {
     onSuccess: (data) => {
-      console.log(`Profile updated!`);
+      toast.success(`Profile updated!`);
     },
   });
 

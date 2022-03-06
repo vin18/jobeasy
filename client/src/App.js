@@ -4,6 +4,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Home, Auth, Profile, Peers, Settings } from './pages';
 import { AuthProvider } from './contexts/auth-context';
 import { Header } from './components';
+import { Toaster } from 'react-hot-toast';
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => {
           </Routes>
         </AuthProvider>
       </BrowserRouter>
+      <Toaster />
       <ReactQueryDevtools />
     </QueryClientProvider>
   );

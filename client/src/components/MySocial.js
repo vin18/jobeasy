@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useMutation } from 'react-query';
 import { useAuth } from '../contexts/auth-context';
 import { updateSocials } from '../utils/api-client';
+import toast from 'react-hot-toast';
 
 const INITIAL_STATE = {
   twitter: '',
@@ -29,7 +30,7 @@ const MySocial = () => {
     isLoading,
   } = useMutation((userValues) => updateSocials(userValues), {
     onSuccess: (data) => {
-      console.log(`Social links updated!`);
+      toast.success(`Social links updated!`);
     },
   });
 

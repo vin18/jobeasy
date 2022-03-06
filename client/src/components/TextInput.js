@@ -1,3 +1,5 @@
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+
 const TextInput = ({
   label,
   inputType,
@@ -8,10 +10,13 @@ const TextInput = ({
   name,
   isTextArea = false,
   widthFull = false,
+  passwordInput = false,
+  showPassword,
+  setShowPassword,
 }) => {
   return (
     <div className="mt-4">
-      <div>
+      <div className="relative">
         <label className="block" htmlFor={inputType}>
           {label}
         </label>
@@ -33,6 +38,18 @@ const TextInput = ({
             onChange={onChange}
             name={name}
           />
+        )}
+        {passwordInput && (
+          <div
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute top-12 right-4 cursor-pointer"
+          >
+            {!showPassword ? (
+              <FaEyeSlash className="pb-1" />
+            ) : (
+              <FaEye className="pb-1" />
+            )}
+          </div>
         )}
         {error && (
           <span className="text-red-500 font-bold text-sm mt-1">{error}</span>

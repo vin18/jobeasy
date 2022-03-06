@@ -38,4 +38,27 @@ const addSocialLinks = async (req, res) => {
   });
 };
 
-export { updateProfile, addSocialLinks };
+/**
+ * @desc    Update password
+ * @route   PATCH /api/v1/user/socials
+ * @access  Private
+ */
+const updatePassword = async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.user._id).select('+password');
+
+  if (!user) {
+    throw new BadRequestError(`No user found!`);
+  }
+
+  if (!(await user.comparePassword(oldPassword, user.password))) {
+    throw new BadRequestError(`Invalid credentials`);
+  }
+
+  user.password = newPassword;
+  await user.save();
+
+  sendResponse(user, res);
+};
+
+export { updateProfile, addSocialLinks, updatePassword };
