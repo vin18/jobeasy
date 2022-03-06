@@ -131,6 +131,7 @@ export const updateProfile = async (values) => {
     await client({
       method: 'PATCH',
       url: `/user`,
+      data: values,
     });
   } catch (error) {
     console.error('updateProfile error: ', error);
@@ -142,6 +143,7 @@ export const updateSocials = async (values) => {
     await client({
       method: 'POST',
       url: `/user/socials`,
+      data: values,
     });
   } catch (error) {
     console.error('updateSocials error: ', error);

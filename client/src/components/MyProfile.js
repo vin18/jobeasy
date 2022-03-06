@@ -17,7 +17,7 @@ const MyProfile = () => {
     mutate: handleUserProfileUpdate,
     data,
     isLoading,
-  } = useMutation(() => updateProfile(initialState), {
+  } = useMutation(() => updateProfile({ ...initialState }), {
     onSuccess: (data) => {
       console.log(`Profile updated!`);
     },
@@ -34,7 +34,7 @@ const MyProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleUserProfileUpdate();
+    handleUserProfileUpdate(initialState);
   };
 
   return (
