@@ -32,6 +32,16 @@ const UserSchema = new mongoose.Schema(
       trim: true,
       default: '',
     },
+    avatar: {
+      public_id: {
+        type: String,
+        default: '',
+      },
+      url: {
+        type: String,
+        default: '',
+      },
+    },
     skills: [String],
     city: {
       type: String,

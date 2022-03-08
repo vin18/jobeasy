@@ -18,7 +18,7 @@ const MyProfile = () => {
     mutate: handleUserProfileUpdate,
     data,
     isLoading,
-  } = useMutation(() => updateProfile({ ...initialState }), {
+  } = useMutation(() => updateProfile({ ...initialState, isNewUser: false }), {
     onSuccess: (data) => {
       toast.success(`Profile updated!`);
     },
@@ -35,7 +35,7 @@ const MyProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleUserProfileUpdate(initialState);
+    handleUserProfileUpdate();
   };
 
   return (
