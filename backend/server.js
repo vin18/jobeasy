@@ -11,6 +11,7 @@ import authRouter from './routes/authRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import projectRouter from './routes/projectRoutes.js';
 import blogRouter from './routes/blogRoutes.js';
+import profileRouter from './routes/profileRoutes.js';
 
 // middlewares
 import errorHandlerMiddleware from './middlewares/error-handler.js';
@@ -34,6 +35,7 @@ app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/projects', projectRouter);
 app.use('/api/v1/blogs', blogRouter);
+app.use('/api/v1/profile', profileRouter);
 
 app.use(errorHandlerMiddleware);
 

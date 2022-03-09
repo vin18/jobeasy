@@ -66,22 +66,4 @@ const logout = (req, res) => {
   });
 };
 
-/**
- * @desc    Get logged in user
- * @route   GET /api/v1/auth/me
- * @access  Private
- */
-const getMe = async (req, res) => {
-  const user = await User.findById(req.user._id);
-
-  if (!user) {
-    throw new NotFoundError(`User not found`);
-  }
-
-  res.status(StatusCodes.OK).json({
-    success: true,
-    user,
-  });
-};
-
-export { register, login, logout, getMe };
+export { register, login, logout };

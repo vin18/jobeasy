@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const { data, isLoading } = useQuery(
     'AuthProvider',
-    () => client.get('/auth/me'),
+    () => client.get('/profile/me'),
     {
       onSuccess: (data) => {
         setUser(data?.data?.user);
