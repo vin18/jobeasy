@@ -1,20 +1,22 @@
 import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 export const client = axios.create({
   baseURL: '/api/v1',
 });
 
 export const auth = async (userData, responseType) => {
-  try {
-    const response = await client({
-      method: 'POST',
-      url: `/auth/${responseType}`,
-      data: userData,
-    });
-    return response;
-  } catch (error) {
-    console.error('Auth error: ', error);
-  }
+  // try {
+  const response = await client({
+    method: 'POST',
+    url: `/auth/${responseType}`,
+    data: userData,
+  });
+  console.log('Response'.response);
+  return response;
+  // } catch (error) {
+  //   console.error('Auth error: ', error);
+  // }
 };
 
 export const logout = async () => {

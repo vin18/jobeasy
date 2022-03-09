@@ -9,9 +9,9 @@ import { sendResponse } from '../utils/index.js';
  * @access  Public
  */
 const register = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { username, email, password } = req.body;
 
-  if (!name || !email || !password) {
+  if (!username || !email || !password) {
     throw new BadRequestError(`Please enter all values`);
   }
 
@@ -20,7 +20,7 @@ const register = async (req, res) => {
     throw new BadRequestError(`Email already exists`);
   }
 
-  const user = await User.create({ name, email, password });
+  const user = await User.create({ username, email, password });
   sendResponse(user, res);
 };
 

@@ -20,6 +20,8 @@ const Auth = () => {
     mutate: handleAuth,
     data,
     isLoading,
+    isError,
+    error,
   } = useMutation((response) => auth(response.currentUser, response.endPoint), {
     onSuccess: (data) => {
       if (data?.status === 200) {
@@ -28,6 +30,12 @@ const Auth = () => {
       }
     },
   });
+
+  useEffect(() => {
+    if (isError) {
+      toast.error(error?.response?.data?.msg);
+    }
+  }, [isError, error]);
 
   useEffect(() => {
     if (isLoggedIn) navigate(`/profile`);
@@ -154,14 +162,16 @@ const Auth = () => {
                       isLoading && 'loading'
                     }`}
                   >
-                    {isMember ? 'Login' : 'Register'}
+                    {!isLoading ? (isMember ? 'Login' : 'Register') : null}
                   </button>
                   <button
                     onClick={handleGuestLogin}
                     disabled={isLoading}
-                    className={`btn btn-primary mt-4 ${isLoading && 'loading'}`}
+                    className={`btn btn-primary mt-4 px-6 ${
+                      isLoading && 'loading'
+                    }`}
                   >
-                    {'Login as guest'}
+                    {!isLoading && 'Login as guest'}
                   </button>
                 </div>
               </Form>
