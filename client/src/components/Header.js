@@ -89,8 +89,10 @@ const Header = () => {
               isOpen && isMobile && 'hidden'
             }`}
           >
-            {isLoggedIn &&
-              navbarLinks.map((link) => (
+            {navbarLinks.map((link) => {
+              if (link.isPrivate && !isLoggedIn) return;
+
+              return (
                 <li key={link.key}>
                   <Link
                     to={link.to}
@@ -101,7 +103,8 @@ const Header = () => {
                     {link.name}
                   </Link>
                 </li>
-              ))}
+              );
+            })}
           </ul>
         </div>
 

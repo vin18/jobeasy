@@ -72,7 +72,9 @@ const Profile = () => {
                 src={
                   user?.avatar?.url
                     ? user?.avatar?.url
-                    : 'https://ui-avatars.com/api/?name=Vinit+Raut&background=69d49a&color=fff'
+                    : `https://ui-avatars.com/api/?name=${
+                        user?.username || 'Test'
+                      }&background=69d49a&color=fff`
                 }
                 alt=""
                 className="w-48 rounded-full shadow-lg"

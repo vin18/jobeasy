@@ -3,6 +3,7 @@ const links = [
     key: 'profile',
     name: 'Profile',
     to: '/profile',
+    isPrivate: true,
   },
   {
     key: 'peers',
@@ -13,6 +14,7 @@ const links = [
     key: 'settings',
     name: 'Settings',
     to: '/settings',
+    isPrivate: true,
   },
 ];
 
