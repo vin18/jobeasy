@@ -65,9 +65,6 @@ const ProfileSchema = new mongoose.Schema(
       linkedin: {
         type: String,
       },
-      github: {
-        type: String,
-      },
       peerlist: {
         type: String,
       },

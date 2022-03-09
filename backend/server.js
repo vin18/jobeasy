@@ -33,9 +33,9 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', userRouter);
+app.use('/api/v1/profile', profileRouter);
 app.use('/api/v1/projects', projectRouter);
 app.use('/api/v1/blogs', blogRouter);
-app.use('/api/v1/profile', profileRouter);
 
 app.use(errorHandlerMiddleware);
 
