@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import request from 'request';
 import { StatusCodes } from 'http-status-codes';
 import { NotFoundError, BadRequestError } from '../errors/index.js';
 import Profile from '../models/profileModel.js';
@@ -193,6 +194,33 @@ const deleteExperience = async (req, res) => {
   });
 };
 
+/**
+ * @desc    Get user repositories from github
+ * @route   GET /api/v1/profile/github/:username
+ * @access  Public
+ */
+const getUserRepos = async (req, res) => {
+  const { username } = req.params;
+  const options = {
+    uri: `https://api.github.com/users/${username}/repos?per_page=4&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`,
+    method: `GET`,
+    headers: { 'user-agent': 'node.js' },
+  };
+
+  request(options, (error, response, body) => {
+    if (error) console.error(error);
+
+    if (response.statusCode !== 200) {
+      throw new NotFoundError(`No github profile found`);
+    }
+
+    res.status(StatusCodes.OK).json({
+      success: true,
+      githubProfile: JSON.parse(body),
+    });
+  });
+};
+
 export {
   getMe,
   mutateUserProfile,
@@ -201,4 +229,5 @@ export {
   deleteUser,
   addExperience,
   deleteExperience,
+  getUserRepos,
 };
