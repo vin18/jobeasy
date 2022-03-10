@@ -148,6 +148,66 @@ const unlikePost = async (req, res) => {
   });
 };
 
+/**
+ * @desc    Add a comment
+ * @route   POST /api/v1/posts/comment/:postId
+ * @access  Private
+ */
+const addComment = async (req, res) => {
+  const { text } = req.body;
+  if (!text) {
+    throw new BadRequestError('Text is required');
+  }
+
+  const user = await User.findById(req.user._id);
+  const post = await Post.findById(req.params.postId);
+  const newComment = {
+    text,
+    name: user.username,
+    avatar: user.avatar,
+    user: req.user._id,
+  };
+
+  post.comments.unshift(newComment);
+  await post.save();
+
+  res.status(StatusCodes.CREATED).json({
+    success: true,
+    comments: post.comments,
+  });
+};
+
+/**
+ * @desc    Delete a comment
+ * @route   DELETE /api/v1/posts/comment/:postId/:commentId
+ * @access  Private
+ */
+const deleteComment = async (req, res) => {
+  const post = await Post.findById(req.params.postId);
+  const comment = post.comments.find(
+    (c) => String(c._id) === String(req.params.commentId)
+  );
+
+  if (!comment) {
+    throw new BadRequestError(`Comment not found!`);
+  }
+
+  if (String(comment.user) !== String(req.user._id)) {
+    throw new UnauthorizedError(`User not authorized to delete the comment`);
+  }
+
+  post.comments = post.comments.filter(
+    (c) => String(c._id) !== String(req.params.commentId)
+  );
+
+  await post.save();
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    comments: post.comments,
+  });
+};
+
 export {
   createPost,
   getAllPosts,
@@ -155,4 +215,6 @@ export {
   deletePost,
   likePost,
   unlikePost,
+  addComment,
+  deleteComment,
 };
