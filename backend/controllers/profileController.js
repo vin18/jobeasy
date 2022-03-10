@@ -12,7 +12,7 @@ import User from '../models/userModel.js';
 const getMe = async (req, res) => {
   const profile = await Profile.findOne({ user: req.user._id }).populate(
     'user',
-    ['name', 'image']
+    ['username', 'image']
   );
 
   if (!profile) {
@@ -91,4 +91,39 @@ const mutateUserProfile = async (req, res) => {
   });
 };
 
-export { getMe, mutateUserProfile };
+/**
+ * @desc    Get all profiles
+ * @route   GET /api/v1/profile
+ * @access  Public
+ */
+const getAllProfiles = async (req, res) => {
+  const profiles = await Profile.find().populate('user', ['username', 'image']);
+  res.status(StatusCodes.OK).json({
+    success: true,
+    profiles,
+  });
+};
+
+/**
+ * @desc    Get profile by user id
+ * @route   GET /api/v1/profile/user/:userId
+ * @access  Public
+ */
+const getUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const profile = await Profile.findOne({ user: userId }).populate('user', [
+    'username',
+    'image',
+  ]);
+
+  if (!profile) {
+    throw new NotFoundError(`Profile not found`);
+  }
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    profile,
+  });
+};
+
+export { getMe, mutateUserProfile, getAllProfiles, getUserProfile };
