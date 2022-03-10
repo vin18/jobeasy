@@ -11,6 +11,7 @@ import MyBlogs from './MyBlogs';
 import MyProfile from './MyProfile';
 import MySocial from './MySocial';
 import ChangePassword from './ChangePassword';
+import PrivateRoute from './PrivateRoute';
 
 export {
   Home,
@@ -26,4 +27,5 @@ export {
   MyProfile,
   MySocial,
   ChangePassword,
+  PrivateRoute,
 };
