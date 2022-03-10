@@ -74,9 +74,6 @@ const deletePost = async (req, res) => {
     throw new BadRequestError(`No post found!`);
   }
 
-  console.log(String(post.user));
-  console.log(req.user._id);
-
   if (String(post.user) !== String(req.user._id)) {
     throw new UnauthorizedError(`User not authorized`);
   }
@@ -89,4 +86,73 @@ const deletePost = async (req, res) => {
   });
 };
 
-export { createPost, getAllPosts, getSinglePost, deletePost };
+/**
+ * @desc    Like a post
+ * @route   PATCH /api/v1/posts/like/:postId
+ * @access  Private
+ */
+const likePost = async (req, res) => {
+  const post = await Post.findById(req.params.postId);
+
+  if (!post) {
+    throw new BadRequestError(`No post found!`);
+  }
+
+  // Check if the post has already been liked
+  const isPostLiked = post.likes.find(
+    (like) => String(like.user) === String(req.user._id)
+  );
+
+  if (isPostLiked) {
+    throw new BadRequestError(`Post already liked!`);
+  }
+
+  post.likes.unshift({ user: req.user._id });
+  await post.save();
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    likes: post.likes,
+  });
+};
+
+/**
+ * @desc    Unlike a post
+ * @route   PATCH /api/v1/posts/unlike/:postId
+ * @access  Private
+ */
+const unlikePost = async (req, res) => {
+  const post = await Post.findById(req.params.postId);
+
+  if (!post) {
+    throw new BadRequestError(`No post found!`);
+  }
+
+  // Check if the post has already been liked
+  const isPostLiked = post.likes.find(
+    (like) => String(like.user) === String(req.user._id)
+  );
+
+  if (!isPostLiked) {
+    throw new BadRequestError(`Post has not yet been liked!`);
+  }
+
+  post.likes = post.likes.filter(
+    (like) => String(like.user) !== String(req.user._id)
+  );
+  await post.save();
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    likes: post.likes,
+  });
+};
+
+export {
+  createPost,
+  getAllPosts,
+  getSinglePost,
+  deletePost,
+  likePost,
+  unlikePost,
+};
