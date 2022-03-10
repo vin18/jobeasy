@@ -143,4 +143,62 @@ const deleteUser = async (req, res) => {
   });
 };
 
-export { getMe, mutateUserProfile, getAllProfiles, getUserProfile, deleteUser };
+/**
+ * @desc    Add profile experience
+ * @route   PATCH /api/v1/profile/experience
+ * @access  Private
+ */
+const addExperience = async (req, res) => {
+  const { title, company, from, location, to, current, description } = req.body;
+  if (!title || !company || !from) {
+    throw new BadRequestError(`Title, company and from fields are required`);
+  }
+
+  const newExperience = {
+    title,
+    company,
+    location,
+    from,
+    to,
+    current,
+    description,
+  };
+
+  const profile = await Profile.findOne({ user: req.user._id });
+  profile.experience.unshift(newExperience);
+  await profile.save();
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    profile,
+  });
+};
+
+/**
+ * @desc    Delete experience
+ * @route   DELETE /api/v1/profile/experience/:expId
+ * @access  Private
+ */
+const deleteExperience = async (req, res) => {
+  const { expId } = req.params;
+  let profile = await Profile.findOne({ user: req.user._id });
+  console.log(profile);
+  profile.experience = profile.experience.filter((p) => p._id === expId);
+
+  await profile.save();
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    profile,
+  });
+};
+
+export {
+  getMe,
+  mutateUserProfile,
+  getAllProfiles,
+  getUserProfile,
+  deleteUser,
+  addExperience,
+  deleteExperience,
+};
