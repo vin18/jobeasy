@@ -126,4 +126,21 @@ const getUserProfile = async (req, res) => {
   });
 };
 
-export { getMe, mutateUserProfile, getAllProfiles, getUserProfile };
+/**
+ * @desc    Delete profile, user & post
+ * @route   DELETE /api/v1/profile
+ * @access  Private
+ */
+const deleteUser = async (req, res) => {
+  // TODO: Remove users posts
+
+  await Profile.findByIdAndDelete(req.user._id);
+  await User.findByIdAndDelete(req.user._id);
+
+  res.status(StatusCodes.OK).json({
+    success: true,
+    msg: 'User deleted',
+  });
+};
+
+export { getMe, mutateUserProfile, getAllProfiles, getUserProfile, deleteUser };
