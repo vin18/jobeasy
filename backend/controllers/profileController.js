@@ -6,11 +6,11 @@ import Profile from '../models/profileModel.js';
 import User from '../models/userModel.js';
 
 /**
- * @desc    Get logged in user
+ * @desc    Get logged in user's profile
  * @route   GET /api/v1/profile/me
  * @access  Private
  */
-const getMe = async (req, res) => {
+const getProfile = async (req, res) => {
   const profile = await Profile.findOne({ user: req.user._id }).populate(
     'user',
     ['username', 'image']
@@ -222,7 +222,7 @@ const getUserRepos = async (req, res) => {
 };
 
 export {
-  getMe,
+  getProfile,
   mutateUserProfile,
   getAllProfiles,
   getUserProfile,

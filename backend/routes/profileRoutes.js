@@ -1,6 +1,6 @@
 import express from 'express';
 import {
-  getMe,
+  getProfile,
   mutateUserProfile,
   getAllProfiles,
   getUserProfile,
@@ -12,7 +12,7 @@ import {
 import protect from '../middlewares/authorization.js';
 const router = express.Router();
 
-router.get(`/me`, protect, getMe);
+router.get(`/me`, protect, getProfile);
 router
   .route(`/`)
   .get(getAllProfiles)

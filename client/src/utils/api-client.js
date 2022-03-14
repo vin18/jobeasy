@@ -6,17 +6,16 @@ export const client = axios.create({
 });
 
 export const auth = async (userData, responseType) => {
-  // try {
+  try {
   const response = await client({
     method: 'POST',
     url: `/auth/${responseType}`,
     data: userData,
   });
-  console.log('Response'.response);
   return response;
-  // } catch (error) {
-  //   console.error('Auth error: ', error);
-  // }
+  } catch (error) {
+    console.error('Auth error: ', error);
+  }
 };
 
 export const logout = async () => {
